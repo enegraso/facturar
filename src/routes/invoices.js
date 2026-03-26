@@ -89,32 +89,7 @@ router.post("/facturar", async (req, res) => {
 
     try {
 
-        /*     const data = {
-              ptoVta: 4,
-              cbteTipo: 11,
-              concepto: 1,
-              docTipo: 99,
-              docNro: 0,
-              impTotal: 1000,
-              impNeto: 1000,
-              impIVA: 0,
-              monId: "PES",
-              monCotiz: 1
-            };
-         */
-        const data = req.body/* ;{
-            ptoVta,
-            cbteTipo,
-            concepto,
-            docTipo,
-            docNro,
-            impTotal,
-            impNeto,
-            impIVA,
-            monId,
-            monCotiz
-        } = req.body; */
-
+        const data = req.body
 
         const voucher = await arca.electronicBillingService.createVoucher(data);
 
@@ -158,5 +133,29 @@ router.get("/info/:id/:ptoventa/:tipo", async (req, res) => {
         });
     }
 });
+
+router.get("/contri/:cuit", async (req, res) => {
+    try {
+        const cuit = req.params.cuit;
+        // Consultar datos del CUIT 20111111111
+        const taxpayerDetails =
+            await arca.registerScopeThirteenService.getTaxpayerDetails(cuit);
+
+        if (taxpayerDetails) {
+            console.log("Datos del contribuyente:", taxpayerDetails);
+        } else {
+            console.log("Contribuyente no encontrado.");
+        }
+        res.status(200).json({
+            ok: true,
+            taxpayerDetails
+        });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            error: error.message
+        });
+    }
+})
 
 export default router
