@@ -1,3 +1,5 @@
 /node_modules
 /src/certs
+/front/node_modules
+/front/dist
 .env

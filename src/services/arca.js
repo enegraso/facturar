@@ -1,14 +1,14 @@
 import fs from "fs";
-import dotenv from "dotenv";
 import { Arca } from "@arcasdk/core";
 
-dotenv.config();
+export function createArcaInstance(cuit, certPath, keyPath) {
+  const cert = fs.readFileSync(certPath, "utf-8");
+  const key = fs.readFileSync(keyPath, "utf-8");
 
-const arca = new Arca({
-  cuit: 20279528787,
-  cert: fs.readFileSync(process.env.FILECRT, "utf-8"),
-  key: fs.readFileSync(process.env.FILEKEY, "utf-8"),
-  production: true
-});
-
-export default arca;
+  return new Arca({
+    cuit,
+    cert,
+    key,
+    production: true,
+  });
+}
